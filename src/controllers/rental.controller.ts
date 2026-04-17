@@ -3,6 +3,9 @@ import * as RentalService from "../services/rental.service";
 import * as VendorService from "../services/vendor.service";
 import { sendResponse, sendError } from "../utils/response";
 
+/**
+ * Handles creation of new garden rental space listings.
+ */
 export const createRentalSpace = async (req: Request, res: Response) => {
   try {
     const profile = await VendorService.getProfile(req.user!.id);
@@ -15,6 +18,9 @@ export const createRentalSpace = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Retrieves all available garden rental spaces with optional filtering.
+ */
 export const getAllSpaces = async (req: Request, res: Response) => {
   try {
     const spaces = await RentalService.getSpaces(req.query);
@@ -24,6 +30,9 @@ export const getAllSpaces = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Retrieves information for a specific rental space.
+ */
 export const getSpaceDetails = async (req: Request, res: Response) => {
   try {
     const { id } = req.params as { id: string };
@@ -35,6 +44,9 @@ export const getSpaceDetails = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Handles update requests for existing rental spaces.
+ */
 export const updateRentalSpace = async (req: Request, res: Response) => {
   try {
     const { id } = req.params as { id: string };
@@ -48,6 +60,9 @@ export const updateRentalSpace = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Handles deletion requests for rental spaces.
+ */
 export const deleteRentalSpace = async (req: Request, res: Response) => {
   try {
     const { id } = req.params as { id: string };

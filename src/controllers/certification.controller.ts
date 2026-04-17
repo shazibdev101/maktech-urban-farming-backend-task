@@ -2,6 +2,9 @@ import { Request, Response } from "express";
 import * as VendorService from "../services/vendor.service";
 import { sendResponse, sendError } from "../utils/response";
 
+/**
+ * Handles certification approval or rejection (Admin-only action).
+ */
 export const approveCertification = async (req: Request, res: Response) => {
   try {
     const { id } = req.params as { id: string };

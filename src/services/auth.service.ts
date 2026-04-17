@@ -2,6 +2,12 @@ import prisma from "../lib/prisma";
 import { hashPassword, comparePassword } from "../utils/hash";
 import { generateToken } from "../utils/jwt";
 
+/**
+ * Registers a new user and creates a vendor profile if the role is VENDOR.
+ * @param userData - Object containing name, email, password, and role.
+ * @returns Object with created user and JWT token.
+ * @throws Error if user already exists.
+ */
 export const registerUser = async (userData: any) => {
   const { name, email, password, role } = userData;
 
@@ -41,6 +47,12 @@ export const registerUser = async (userData: any) => {
   return { user, token };
 };
 
+/**
+ * Authenticates a user and returns a JWT token.
+ * @param credentials - Object containing email and password.
+ * @returns Object with user details and JWT token.
+ * @throws Error if invalid credentials or inactive account.
+ */
 export const loginUser = async (credentials: any) => {
   const { email, password } = credentials;
 

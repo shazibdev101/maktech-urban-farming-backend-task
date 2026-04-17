@@ -2,6 +2,9 @@ import { Request, Response } from "express";
 import * as TrackingService from "../services/tracking.service";
 import { sendResponse, sendError } from "../utils/response";
 
+/**
+ * Handles adding a new plant to a leased garden plot.
+ */
 export const addPlant = async (req: Request, res: Response) => {
   try {
     const { orderId, name, growthStage } = req.body;
@@ -12,6 +15,9 @@ export const addPlant = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Handles updates to plant health or growth stages.
+ */
 export const updatePlant = async (req: Request, res: Response) => {
   try {
     const { id } = req.params as { id: string };
@@ -22,6 +28,10 @@ export const updatePlant = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Retrieves the comprehensive farming dashboard for a user.
+ * Displays all leased plots and their current plant inventory.
+ */
 export const getDashboard = async (req: Request, res: Response) => {
   try {
     const data = await TrackingService.getDashboardData(req.user!.id);

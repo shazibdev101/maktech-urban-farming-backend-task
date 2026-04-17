@@ -1,6 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import { sendError } from "../utils/response";
 
+/**
+ * Role-based access control middleware.
+ * @param roles - Array of allowed roles (e.g., ['ADMIN', 'VENDOR']).
+ */
 export const roleMiddleware = (roles: string[]) => {
   return (req: Request, res: Response, next: NextFunction) => {
     if (!req.user) {

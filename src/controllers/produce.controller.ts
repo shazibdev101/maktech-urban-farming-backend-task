@@ -3,6 +3,9 @@ import * as ProduceService from "../services/produce.service";
 import * as VendorService from "../services/vendor.service";
 import { sendResponse, sendError } from "../utils/response";
 
+/**
+ * Handles product creation for vendors.
+ */
 export const createProduct = async (req: Request, res: Response) => {
   try {
     const profile = await VendorService.getProfile(req.user!.id);
@@ -15,6 +18,9 @@ export const createProduct = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Retrieves all marketplace products with filtering and pagination.
+ */
 export const getAllProducts = async (req: Request, res: Response) => {
   try {
     const products = await ProduceService.getAllProduce(req.query);
@@ -24,6 +30,9 @@ export const getAllProducts = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Retrieves detailed information for a specific product.
+ */
 export const getProductDetails = async (req: Request, res: Response) => {
   try {
     const { id } = req.params as { id: string };
@@ -35,6 +44,9 @@ export const getProductDetails = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Handles product update requests for vendors.
+ */
 export const updateProduct = async (req: Request, res: Response) => {
   try {
     const { id } = req.params as { id: string };
@@ -48,6 +60,9 @@ export const updateProduct = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Handles product deletion requests for vendors.
+ */
 export const deleteProduct = async (req: Request, res: Response) => {
   try {
     const { id } = req.params as { id: string };

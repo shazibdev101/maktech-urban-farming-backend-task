@@ -2,6 +2,9 @@ import { Request, Response } from "express";
 import * as VendorService from "../services/vendor.service";
 import { sendResponse, sendError } from "../utils/response";
 
+/**
+ * Retrieves the profile details for the currently logged-in vendor.
+ */
 export const getMyProfile = async (req: Request, res: Response) => {
   try {
     const profile = await VendorService.getProfile(req.user!.id);
@@ -11,6 +14,9 @@ export const getMyProfile = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Updates the profile details for the currently logged-in vendor.
+ */
 export const updateMyProfile = async (req: Request, res: Response) => {
   try {
     const profile = await VendorService.updateProfile(req.user!.id, req.body);
@@ -20,6 +26,9 @@ export const updateMyProfile = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Handles certification application requests from vendors.
+ */
 export const applyForCertification = async (req: Request, res: Response) => {
   try {
     // Need to find vendorId first

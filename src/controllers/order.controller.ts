@@ -3,6 +3,9 @@ import * as OrderService from "../services/order.service";
 import * as VendorService from "../services/vendor.service";
 import { sendResponse, sendError } from "../utils/response";
 
+/**
+ * Handles order placement and rental space booking requests.
+ */
 export const placeOrder = async (req: Request, res: Response) => {
   try {
     const order = await OrderService.createOrder(req.user!.id, req.body);
@@ -12,6 +15,9 @@ export const placeOrder = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Retrieves order history for the currently logged-in customer.
+ */
 export const getMyOrders = async (req: Request, res: Response) => {
   try {
     const orders = await OrderService.getUserOrders(req.user!.id, req.query);
@@ -21,6 +27,9 @@ export const getMyOrders = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Retrieves orders received by the currently logged-in vendor.
+ */
 export const getVendorOrders = async (req: Request, res: Response) => {
   try {
     const profile = await VendorService.getProfile(req.user!.id);
@@ -33,6 +42,9 @@ export const getVendorOrders = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Updates the status of an order (Vendor-only action).
+ */
 export const updateStatus = async (req: Request, res: Response) => {
   try {
     const { id } = req.params as { id: string };

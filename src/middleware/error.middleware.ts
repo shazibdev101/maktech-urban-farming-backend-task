@@ -1,5 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 
+/**
+ * Custom error class for API-related failures.
+ */
 export class ApiError extends Error {
   constructor(public statusCode: number, public message: string, public isOperational = true) {
     super(message);
@@ -8,6 +11,10 @@ export class ApiError extends Error {
   }
 }
 
+/**
+ * Global error handling middleware.
+ * Standardizes all 400/500 level errors into a clean JSON response.
+ */
 export const errorMiddleware = (err: any, req: Request, res: Response, next: NextFunction) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || "Internal Server Error";
@@ -20,6 +27,10 @@ export const errorMiddleware = (err: any, req: Request, res: Response, next: Nex
   });
 };
 
+/**
+ * Utility to catch errors in asynchronous route handlers and pass them to errorMiddleware.
+ * Eliminates the need for manual try/catch blocks in controllers.
+ */
 export const catchAsync = (fn: Function) => (req: Request, res: Response, next: NextFunction) => {
   Promise.resolve(fn(req, res, next)).catch(next);
 };

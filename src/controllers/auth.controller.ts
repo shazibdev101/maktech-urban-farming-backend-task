@@ -2,6 +2,9 @@ import { Request, Response } from "express";
 import * as AuthService from "../services/auth.service";
 import { sendResponse, sendError } from "../utils/response";
 
+/**
+ * Handles user registration requests.
+ */
 export const register = async (req: Request, res: Response) => {
   try {
     const result = await AuthService.registerUser(req.body);
@@ -11,6 +14,9 @@ export const register = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Handles user login requests.
+ */
 export const login = async (req: Request, res: Response) => {
   try {
     const result = await AuthService.loginUser(req.body);
@@ -20,6 +26,9 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Retrieves the currently authenticated user's profile.
+ */
 export const getMe = async (req: Request, res: Response) => {
   try {
     // req.user is populated by authMiddleware

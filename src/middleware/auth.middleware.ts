@@ -15,6 +15,10 @@ declare global {
   }
 }
 
+/**
+ * Authentication middleware to verify JWT token from Authorization header.
+ * Hydrates req.user with decoded token data if valid.
+ */
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
 

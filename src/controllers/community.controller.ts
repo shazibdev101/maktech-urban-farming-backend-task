@@ -2,6 +2,9 @@ import { Request, Response } from "express";
 import * as CommunityService from "../services/community.service";
 import { sendResponse, sendError } from "../utils/response";
 
+/**
+ * Handles creation of a community forum post.
+ */
 export const createPost = async (req: Request, res: Response) => {
   try {
     const { content } = req.body;
@@ -12,6 +15,9 @@ export const createPost = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Retrieves the global community forum feed.
+ */
 export const getFeed = async (req: Request, res: Response) => {
   try {
     const posts = await CommunityService.getAllPosts();
@@ -21,6 +27,9 @@ export const getFeed = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Handles adding a comment to an existing forum post.
+ */
 export const commentOnPost = async (req: Request, res: Response) => {
   try {
     const { id } = req.params as { id: string }; // postId

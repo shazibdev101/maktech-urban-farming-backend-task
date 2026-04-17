@@ -1,6 +1,12 @@
 import { OrderStatus } from "@prisma/client";
 import prisma from "../lib/prisma";
 
+/**
+ * Creates a new order for produce or a booking for a rental space.
+ * Automatically validates availability and updates rental space status.
+ * @param userId - ID of the customer placing the order.
+ * @param orderData - Object containing produceId, rentalSpaceId, and vendorId.
+ */
 export const createOrder = async (userId: string, orderData: any) => {
   const { produceId, rentalSpaceId, vendorId } = orderData;
 
@@ -42,6 +48,11 @@ export const createOrder = async (userId: string, orderData: any) => {
   });
 };
 
+/**
+ * Retrieves all orders for a specific customer with pagination.
+ * @param userId - ID of the customer.
+ * @param filters - Pagination parameters (page, limit).
+ */
 export const getUserOrders = async (userId: string, filters: any = {}) => {
   const { page = 1, limit = 10 } = filters;
   const skip = (Number(page) - 1) * Number(limit);
@@ -65,6 +76,11 @@ export const getUserOrders = async (userId: string, filters: any = {}) => {
   return { data, total, page: Number(page), limit: Number(limit) };
 };
 
+/**
+ * Retrieves all orders received by a specific vendor with pagination.
+ * @param vendorId - ID of the vendor profile.
+ * @param filters - Pagination parameters (page, limit).
+ */
 export const getVendorOrders = async (vendorId: string, filters: any = {}) => {
   const { page = 1, limit = 10 } = filters;
   const skip = (Number(page) - 1) * Number(limit);
@@ -90,6 +106,12 @@ export const getVendorOrders = async (vendorId: string, filters: any = {}) => {
   return { data, total, page: Number(page), limit: Number(limit) };
 };
 
+/**
+ * Updates the status of an existing order (e.g., PENDING to DELIVERED).
+ * @param orderId - ID of the order.
+ * @param vendorId - ID of the vendor owning the order.
+ * @param status - Target status (OrderStatus enum).
+ */
 export const updateOrderStatus = async (orderId: string, vendorId: string, status: any) => {
   const order = await prisma.order.findFirst({
     where: { id: orderId, vendorId },
