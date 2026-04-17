@@ -1,12 +1,15 @@
 import { Router } from "express";
-import * as AuthController from "../controllers/auth.controller";
-import { authMiddleware } from "../middleware/auth.middleware";
+import authRoutes from "./auth.routes";
+import vendorRoutes from "./vendor.routes";
+import certificationRoutes from "./certification.routes";
+import produceRoutes from "./produce.routes";
 
 const router = Router();
 
-router.post("/auth/register", AuthController.register);
-router.post("/auth/login", AuthController.login);
-router.get("/auth/me", authMiddleware, AuthController.getMe);
+router.use("/auth", authRoutes);
+router.use("/vendors", vendorRoutes);
+router.use("/certifications", certificationRoutes);
+router.use("/produce", produceRoutes);
 
 router.get("/", (req, res) => {
   res.json({
