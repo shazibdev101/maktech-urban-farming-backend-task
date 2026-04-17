@@ -1,53 +1,36 @@
 # Urban Farming Backend Platform 🥦🚜
 
-An interactive backend platform designed to bridge the gap between urban farmers and customers. Built with **Node.js**, **Express**, and **Prisma 7**.
+An interactive backend platform designed to bridge the gap between urban farmers and metropolitan customers. This project enables garden space rentals, organic produce trading, community knowledge sharing, and real-time plant growth tracking.
 
-## 🚀 Features
+## 🚀 Core Modules & Features
 
-- **RBAC (Role-Based Access Control)**: Specialized permissions for Admin, Vendor, and Customer roles.
-- **Marketplace**: Browse, search, and purchase organic produce, seeds, and tools.
-- **Garden Rental**: Farmers list garden plots for users to lease and grow their own crops.
-- **Plant Tracking**: Monitoring growth stage and health data for plants in leased plots.
-- **Community Forum**: A space for urban farming enthusiasts to share tips and knowledge.
-- **Sustainability Certification**: Automated workflow for vendors to apply for certifications.
+### 1. User Authentication & RBAC
+- Secure JWT-based auth with Bcrypt password hashing.
+- Role-Based Access Control: **Admin**, **Vendor**, and **Customer**.
 
-## 🛠️ Tech Stack
+### 2. Garden Space Rental
+- Vendors can list garden plots for lease.
+- Customers can search for plots by location and book them.
 
-- **Runtime**: Node.js (v20+)
-- **Language**: TypeScript
-- **Framework**: Express.js
-- **ORM**: Prisma 7 (with PostgreSQL)
-- **Database**: Supabase (PostgreSQL)
-- **Security**: JWT, Bcrypt, Rate Limiting
-- **Validation**: Zod
-- **Logging**: Morgan
+### 3. Produce Marketplace
+- Comprehensive catalog for seeds, tools, and organic products.
+- Advanced filtering by category, price range, and keyword search.
+- Integrated **Paginated** listings for performance.
 
-## 📋 API Documentation
+### 4. Sustainability & Certification
+- Automated certification workflow for vendors.
+- Admin review system to approve/reject organic certifications.
 
-### Authentication
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| POST | `/api/v1/auth/register` | Register a new user |
-| POST | `/api/v1/auth/login` | Login and get token |
-| GET | `/api/v1/auth/me` | Get current user info |
+### 5. Community & Tracking
+- **Forum**: Threaded discussions and gardening tips logic.
+- **Tracking**: Real-time growth stage and health monitoring for leased plants.
 
-### Marketplace (Produce)
-| Method | Endpoint | Auth | Description |
-| :--- | :--- | :--- | :--- |
-| GET | `/api/v1/produce` | Public | List products (supports filters) |
-| POST | `/api/v1/produce` | Vendor | Create product listing |
-
-### Garden Rental & Booking
-| Method | Endpoint | Auth | Description |
-| :--- | :--- | :--- | :--- |
-| GET | `/api/v1/rental` | Public | View available garden plots |
-| POST | `/api/v1/orders` | Customer | Order produce or Book a rental space |
-
-### Community & Tracking
-| Method | Endpoint | Auth | Description |
-| :--- | :--- | :--- | :--- |
-| GET | `/api/v1/community` | Public | View community posts |
-| GET | `/api/v1/tracking/dashboard` | User | View leased plots and plant health |
+## 🛠️ Tech Stack & Architecture
+- **Backend**: Node.js, Express, TypeScript.
+- **ORM**: Prisma 7.
+- **Database**: Supabase (PostgreSQL) with Connection Pooling.
+- **Validation**: Zod (Strict Schema Enforcement).
+- **Security**: Rate-Limiting, Helmet-ready headers, stateless JWT.
 
 ## ⚙️ Setup Instructions
 
@@ -56,30 +39,44 @@ An interactive backend platform designed to bridge the gap between urban farmers
    npm install
    ```
 
-2. **Environment Variables**:
-   Create a `.env` file with:
+2. **Environment Configuration**:
+   Create a `.env` file in the root:
    ```env
    PORT=5000
    DATABASE_URL="your_supabase_pooler_url"
    DIRECT_URL="your_supabase_direct_url"
-   JWT_SECRET="your_secret"
+   JWT_SECRET="your_secure_secret"
    ```
 
-3. **Database Setup**:
+3. **Database Population (Required)**:
+   Synchronize the schema and run the seeder:
    ```bash
    npx prisma db push
    npx prisma db seed
    ```
 
-4. **Run Development Server**:
+4. **Run Server**:
    ```bash
    npm run dev
    ```
 
-## 🧪 Testing Account
+## 🧪 Testing Accounts (Seeding Data)
 - **Admin**: `admin@farming.com` / `password123`
-- **Vendor**: `vendor1@example.com` / `password123`
+- **Vendor**: `vendor1@example.com` to `vendor10@example.com` / `password123`
 - **Customer**: `customer1@example.com` / `password123`
 
+## 📡 API Endpoints Overview
+
+| Module | Endpoint | Method | Role |
+| :--- | :--- | :--- | :--- |
+| **Auth** | `/api/v1/auth/login` | POST | Public |
+| **Market** | `/api/v1/produce` | GET | Public |
+| **Market** | `/api/v1/produce` | POST | Vendor |
+| **Rental** | `/api/v1/rental` | GET | Public |
+| **Orders** | `/api/v1/orders` | POST | Customer |
+| **Admin** | `/api/v1/admin/certification/:id` | PATCH | Admin |
+| **Tracking** | `/api/v1/tracking/dashboard` | GET | User |
+
 ---
-Developed for Maktech Urban Farming Assignment.
+**Developed for Maktech Urban Farming Assignment.**
+Detailed technical notes can be found in [STRATEGY.md](./STRATEGY.md).
