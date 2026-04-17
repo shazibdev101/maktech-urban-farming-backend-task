@@ -91,19 +91,23 @@ model RentalSpace {
   availability Boolean       @default(true)
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
+
+  orders       Order[]
 }
 
 model Order {
-  id         String        @id @default(uuid())
-  userId     String
-  user       User          @relation(fields: [userId], references: [id])
-  vendorId   String
-  vendor     VendorProfile @relation("VendorOrders", fields: [vendorId], references: [id])
-  produceId  String
-  produce    Produce       @relation(fields: [produceId], references: [id])
-  status     OrderStatus   @default(PENDING)
-  orderDate  DateTime      @default(now())
-  updatedAt  DateTime      @updatedAt
+  id           String        @id @default(uuid())
+  userId       String
+  user         User          @relation(fields: [userId], references: [id])
+  vendorId     String
+  vendor       VendorProfile @relation("VendorOrders", fields: [vendorId], references: [id])
+  produceId    String?
+  produce      Produce?      @relation(fields: [produceId], references: [id])
+  rentalSpaceId String?
+  rentalSpace  RentalSpace?  @relation(fields: [rentalSpaceId], references: [id])
+  status       OrderStatus   @default(PENDING)
+  orderDate    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 }
 
 model CommunityPost {
