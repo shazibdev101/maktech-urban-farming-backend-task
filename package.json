@@ -1,6 +1,9 @@
 {
   "name": "maktech-urban-farming-backend-task",
   "version": "1.0.0",
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "scripts": {
     "dev": "nodemon",
     "build": "tsc",
