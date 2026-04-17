@@ -47,6 +47,7 @@ model User {
   vendorProfile VendorProfile?
   orders        Order[]
   posts         CommunityPost[]
+  comments      Comment[]
 }
 
 model VendorProfile {
@@ -108,6 +109,20 @@ model Order {
   status       OrderStatus   @default(PENDING)
   orderDate    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
+
+  plants       Plant[]
+}
+
+model Plant {
+  id           String   @id @default(uuid())
+  orderId      String
+  order        Order    @relation(fields: [orderId], references: [id])
+  name         String
+  healthStatus String   @default("HEALTHY") // e.g., HEALTHY, NEEDS_WATER, PEST_WARNING
+  growthStage  String   @default("SEEDLING") // e.g., SEEDLING, VEGETATIVE, FLOWERING, HARVEST_READY
+  lastWatered  DateTime @default(now())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model CommunityPost {
@@ -117,6 +132,18 @@ model CommunityPost {
   postContent String
   postDate    DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  comments    Comment[]
+}
+
+model Comment {
+  id          String   @id @default(uuid())
+  postId      String
+  post        CommunityPost @relation(fields: [postId], references: [id])
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  content     String
+  createdAt   DateTime @default(now())
 }
 
 model SustainabilityCert {
