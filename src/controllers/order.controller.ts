@@ -14,7 +14,7 @@ export const placeOrder = async (req: Request, res: Response) => {
 
 export const getMyOrders = async (req: Request, res: Response) => {
   try {
-    const orders = await OrderService.getUserOrders(req.user!.id);
+    const orders = await OrderService.getUserOrders(req.user!.id, req.query);
     return sendResponse(res, 200, "User orders retrieved", orders);
   } catch (error: any) {
     return sendError(res, 400, error.message);
@@ -26,7 +26,7 @@ export const getVendorOrders = async (req: Request, res: Response) => {
     const profile = await VendorService.getProfile(req.user!.id);
     if (!profile) return sendError(res, 404, "Vendor profile not found");
 
-    const orders = await OrderService.getVendorOrders(profile.id);
+    const orders = await OrderService.getVendorOrders(profile.id, req.query);
     return sendResponse(res, 200, "Vendor orders retrieved", orders);
   } catch (error: any) {
     return sendError(res, 400, error.message);

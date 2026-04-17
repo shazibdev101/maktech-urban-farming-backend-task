@@ -42,30 +42,52 @@ export const createOrder = async (userId: string, orderData: any) => {
   });
 };
 
-export const getUserOrders = async (userId: string) => {
-  return await prisma.order.findMany({
-    where: { userId },
-    include: {
-      produce: true,
-      rentalSpace: true,
-      vendor: true,
-    },
-    orderBy: { orderDate: "desc" },
-  });
+export const getUserOrders = async (userId: string, filters: any = {}) => {
+  const { page = 1, limit = 10 } = filters;
+  const skip = (Number(page) - 1) * Number(limit);
+  const take = Number(limit);
+
+  const [data, total] = await Promise.all([
+    prisma.order.findMany({
+      where: { userId },
+      include: {
+        produce: true,
+        rentalSpace: true,
+        vendor: true,
+      },
+      orderBy: { orderDate: "desc" },
+      skip,
+      take,
+    }),
+    prisma.order.count({ where: { userId } }),
+  ]);
+
+  return { data, total, page: Number(page), limit: Number(limit) };
 };
 
-export const getVendorOrders = async (vendorId: string) => {
-  return await prisma.order.findMany({
-    where: { vendorId },
-    include: {
-      user: {
-        select: { name: true, email: true }
+export const getVendorOrders = async (vendorId: string, filters: any = {}) => {
+  const { page = 1, limit = 10 } = filters;
+  const skip = (Number(page) - 1) * Number(limit);
+  const take = Number(limit);
+
+  const [data, total] = await Promise.all([
+    prisma.order.findMany({
+      where: { vendorId },
+      include: {
+        user: {
+          select: { name: true, email: true }
+        },
+        produce: true,
+        rentalSpace: true,
       },
-      produce: true,
-      rentalSpace: true,
-    },
-    orderBy: { orderDate: "desc" },
-  });
+      orderBy: { orderDate: "desc" },
+      skip,
+      take,
+    }),
+    prisma.order.count({ where: { vendorId } }),
+  ]);
+
+  return { data, total, page: Number(page), limit: Number(limit) };
 };
 
 export const updateOrderStatus = async (orderId: string, vendorId: string, status: any) => {

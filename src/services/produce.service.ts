@@ -10,26 +10,44 @@ export const createProduce = async (vendorId: string, produceData: any) => {
 };
 
 export const getAllProduce = async (filters: any) => {
-  const { category, minPrice, maxPrice, search } = filters;
+  const { category, minPrice, maxPrice, search, page = 1, limit = 10 } = filters;
+  const skip = (Number(page) - 1) * Number(limit);
+  const take = Number(limit);
   
-  return await prisma.produce.findMany({
-    where: {
-      AND: [
-        category ? { category } : {},
-        minPrice ? { price: { gte: parseFloat(minPrice) } } : {},
-        maxPrice ? { price: { lte: parseFloat(maxPrice) } } : {},
-        search ? { name: { contains: search, mode: "insensitive" } } : {},
-      ],
-    },
-    include: {
-      vendor: {
-        select: {
-          farmName: true,
-          farmLocation: true,
+  const [data, total] = await Promise.all([
+    prisma.produce.findMany({
+      where: {
+        AND: [
+          category ? { category } : {},
+          minPrice ? { price: { gte: parseFloat(minPrice) } } : {},
+          maxPrice ? { price: { lte: parseFloat(maxPrice) } } : {},
+          search ? { name: { contains: search, mode: "insensitive" } } : {},
+        ],
+      },
+      include: {
+        vendor: {
+          select: {
+            farmName: true,
+            farmLocation: true,
+          },
         },
       },
-    },
-  });
+      skip,
+      take,
+    }),
+    prisma.produce.count({
+      where: {
+        AND: [
+          category ? { category } : {},
+          minPrice ? { price: { gte: parseFloat(minPrice) } } : {},
+          maxPrice ? { price: { lte: parseFloat(maxPrice) } } : {},
+          search ? { name: { contains: search, mode: "insensitive" } } : {},
+        ],
+      },
+    }),
+  ]);
+
+  return { data, total, page: Number(page), limit: Number(limit) };
 };
 
 export const getProduceById = async (id: string) => {

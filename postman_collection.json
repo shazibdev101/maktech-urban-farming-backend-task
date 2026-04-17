@@ -1,0 +1,259 @@
+{
+	"info": {
+		"name": "Urban Farming API - COMPLETE",
+		"description": "Full API Suite for Urban Farming Backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Authentication",
+			"item": [
+				{
+					"name": "Login (Vendor)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"vendor1@example.com\",\n    \"password\": \"password123\"\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": "http://localhost:5000/api/v1/auth/login"
+					}
+				},
+				{
+					"name": "Login (Admin)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@farming.com\",\n    \"password\": \"password123\"\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": "http://localhost:5000/api/v1/auth/login"
+					}
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"New User\",\n    \"email\": \"new@user.com\",\n    \"password\": \"password123\",\n    \"role\": \"CUSTOMER\"\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": "http://localhost:5000/api/v1/auth/register"
+					}
+				},
+				{
+					"name": "Get My Profile",
+					"request": {
+						"method": "GET",
+						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
+						"url": "http://localhost:5000/api/v1/auth/me"
+					}
+				}
+			]
+		},
+		{
+			"name": "2. Produce Marketplace",
+			"item": [
+				{
+					"name": "List All Produce (Pagination)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:5000/api/v1/produce?page=1&limit=10"
+					}
+				},
+				{
+					"name": "Get Product Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:5000/api/v1/produce/PRODUCT_ID"
+					}
+				},
+				{
+					"name": "Create Product (Vendor)",
+					"request": {
+						"method": "POST",
+						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Organic Spinach\",\n    \"price\": 12.0,\n    \"category\": \"VEGETABLES\",\n    \"availableQuantity\": 50\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": "http://localhost:5000/api/v1/produce"
+					}
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"method": "PUT",
+						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"price\": 15.0\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": "http://localhost:5000/api/v1/produce/PRODUCT_ID"
+					}
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
+						"url": "http://localhost:5000/api/v1/produce/PRODUCT_ID"
+					}
+				}
+			]
+		},
+		{
+			"name": "3. Garden Rental",
+			"item": [
+				{
+					"name": "Get Available Plots",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:5000/api/v1/rental"
+					}
+				},
+				{
+					"name": "Create Plot (Vendor)",
+					"request": {
+						"method": "POST",
+						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"location\": \"Plot A, North Farm\",\n    \"size\": \"10x10\",\n    \"price\": 250\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": "http://localhost:5000/api/v1/rental"
+					}
+				}
+			]
+		},
+		{
+			"name": "4. Sustainability & Admin",
+			"item": [
+				{
+					"name": "Apply for Certification (Vendor)",
+					"request": {
+						"method": "POST",
+						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"certifyingAgency\": \"Global Organic Body\",\n    \"certificationDate\": \"2024-04-17T10:00:00Z\"\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": "http://localhost:5000/api/v1/vendor/certification"
+					}
+				},
+				{
+					"name": "Approve Certification (Admin)",
+					"request": {
+						"method": "PATCH",
+						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
+						"url": "http://localhost:5000/api/v1/admin/certification/CERT_ID"
+					}
+				}
+			]
+		},
+		{
+			"name": "5. Orders & Bookings",
+			"item": [
+				{
+					"name": "Place Order/Booking",
+					"request": {
+						"method": "POST",
+						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"vendorId\": \"VENDOR_ID\",\n    \"produceId\": \"PRODUCE_ID_OR_NULL\",\n    \"rentalSpaceId\": \"RENTAL_ID_OR_NULL\"\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": "http://localhost:5000/api/v1/orders"
+					}
+				},
+				{
+					"name": "My Orders (Customer)",
+					"request": {
+						"method": "GET",
+						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
+						"url": "http://localhost:5000/api/v1/orders/my-orders"
+					}
+				},
+				{
+					"name": "Vendor Orders (Vendor)",
+					"request": {
+						"method": "GET",
+						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
+						"url": "http://localhost:5000/api/v1/orders/vendor-orders"
+					}
+				},
+				{
+					"name": "Update Order Status",
+					"request": {
+						"method": "PATCH",
+						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
+						"body": { "mode": "raw", "raw": "{\"status\": \"DELIVERED\"}", "options": { "raw": { "language": "json" } } },
+						"url": "http://localhost:5000/api/v1/orders/ORDER_ID/status"
+					}
+				}
+			]
+		},
+		{
+			"name": "6. Community & Tracking",
+			"item": [
+				{
+					"name": "Get Community Feed",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:5000/api/v1/community"
+					}
+				},
+				{
+					"name": "Create Post",
+					"request": {
+						"method": "POST",
+						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
+						"body": { "mode": "raw", "raw": "{\"content\": \"New farming tip!\"}", "options": { "raw": { "language": "json" } } },
+						"url": "http://localhost:5000/api/v1/community"
+					}
+				},
+				{
+					"name": "Add Comment",
+					"request": {
+						"method": "POST",
+						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
+						"body": { "mode": "raw", "raw": "{\"content\": \"Nice tip!\"}", "options": { "raw": { "language": "json" } } },
+						"url": "http://localhost:5000/api/v1/community/POST_ID/comment"
+					}
+				},
+				{
+					"name": "Plant Tracking Dashboard",
+					"request": {
+						"method": "GET",
+						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
+						"url": "http://localhost:5000/api/v1/tracking/dashboard"
+					}
+				},
+				{
+					"name": "Update Plant Health",
+					"request": {
+						"method": "PATCH",
+						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
+						"body": { "mode": "raw", "raw": "{\"healthStatus\": \"HEALTHY\", \"growthStage\": \"HARVEST\"}", "options": { "raw": { "language": "json" } } },
+						"url": "http://localhost:5000/api/v1/tracking/plants/PLANT_ID"
+					}
+				}
+			]
+		}
+	]
+}
