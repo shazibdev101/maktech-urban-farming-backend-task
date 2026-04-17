@@ -138,6 +138,22 @@
 			"item": [
 				{
 					"name": "List All Produce (Pagination)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"if (jsonData.success && jsonData.data && jsonData.data.data && jsonData.data.data.length > 0) {",
+									"    const firstItem = jsonData.data.data[0];",
+									"    pm.collectionVariables.set(\"product_id\", firstItem.id);",
+									"    pm.collectionVariables.set(\"vendor_id\", firstItem.vendorId);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -207,6 +223,22 @@
 			"item": [
 				{
 					"name": "Get Available Plots",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"if (jsonData.success && jsonData.data && jsonData.data.data && jsonData.data.data.length > 0) {",
+									"    const firstItem = jsonData.data.data[0];",
+									"    pm.collectionVariables.set(\"plot_id\", firstItem.id);",
+									"    pm.collectionVariables.set(\"vendor_id\", firstItem.vendorId);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -314,6 +346,20 @@
 				},
 				{
 					"name": "My Orders (Customer)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"if (jsonData.success && jsonData.data && jsonData.data.data && jsonData.data.data.length > 0) {",
+									"    pm.collectionVariables.set(\"order_id\", jsonData.data.data[0].id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -322,6 +368,20 @@
 				},
 				{
 					"name": "Vendor Orders (Vendor)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"if (jsonData.success && jsonData.data && jsonData.data.length > 0) {",
+									"    pm.collectionVariables.set(\"order_id\", jsonData.data[0].id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -344,6 +404,20 @@
 			"item": [
 				{
 					"name": "Get Community Feed",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"if (jsonData.success && jsonData.data && jsonData.data.length > 0) {",
+									"    pm.collectionVariables.set(\"post_id\", jsonData.data[0].id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
