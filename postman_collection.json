@@ -4,13 +4,40 @@
 		"description": "Full API Suite for Urban Farming Backend",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
 	"item": [
 		{
 			"name": "1. Authentication",
 			"item": [
 				{
 					"name": "Login (Vendor)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"if (jsonData.success && jsonData.data && jsonData.data.token) {",
+									"    const token = jsonData.data.token;",
+									"    pm.collectionVariables.set(\"token\", token);",
+									"    if (pm.environment) { pm.environment.set(\"token\", token); }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
+						"auth": { "type": "noauth" },
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -18,12 +45,29 @@
 							"raw": "{\n    \"email\": \"vendor1@example.com\",\n    \"password\": \"password123\"\n}",
 							"options": { "raw": { "language": "json" } }
 						},
-						"url": "http://localhost:5000/api/v1/auth/login"
+						"url": "{{base_url}}/auth/login"
 					}
 				},
 				{
 					"name": "Login (Admin)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"if (jsonData.success && jsonData.data && jsonData.data.token) {",
+									"    const token = jsonData.data.token;",
+									"    pm.collectionVariables.set(\"token\", token);",
+									"    if (pm.environment) { pm.environment.set(\"token\", token); }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
+						"auth": { "type": "noauth" },
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -31,12 +75,30 @@
 							"raw": "{\n    \"email\": \"admin@farming.com\",\n    \"password\": \"password123\"\n}",
 							"options": { "raw": { "language": "json" } }
 						},
-						"url": "http://localhost:5000/api/v1/auth/login"
+						"url": "{{base_url}}/auth/login"
 					}
 				},
 				{
 					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"if (jsonData.success && jsonData.data && jsonData.data.token) {",
+									"    const token = jsonData.data.token;",
+									"    pm.collectionVariables.set(\"token\", token);",
+									"    if (pm.environment) { pm.environment.set(\"token\", token); }",
+									"    console.log(\"✅ Token captured and saved to variables (Collection & Environment)\");",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
+						"auth": { "type": "noauth" },
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -44,15 +106,29 @@
 							"raw": "{\n    \"name\": \"New User\",\n    \"email\": \"new@user.com\",\n    \"password\": \"password123\",\n    \"role\": \"CUSTOMER\"\n}",
 							"options": { "raw": { "language": "json" } }
 						},
-						"url": "http://localhost:5000/api/v1/auth/register"
+						"url": "{{base_url}}/auth/register"
 					}
 				},
 				{
 					"name": "Get My Profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"if (jsonData.success && jsonData.data && jsonData.data.vendorProfile) {",
+									"    pm.collectionVariables.set(\"vendor_id\", jsonData.data.vendorProfile.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
-						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
-						"url": "http://localhost:5000/api/v1/auth/me"
+						"header": [],
+						"url": "{{base_url}}/auth/me"
 					}
 				}
 			]
@@ -65,7 +141,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:5000/api/v1/produce?page=1&limit=10"
+						"url": "{{base_url}}/produce?page=1&limit=10"
 					}
 				},
 				{
@@ -73,41 +149,55 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:5000/api/v1/produce/PRODUCT_ID"
+						"url": "{{base_url}}/produce/{{product_id}}"
 					}
 				},
 				{
 					"name": "Create Product (Vendor)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"if (jsonData.success && jsonData.data && jsonData.data.id) {",
+									"    pm.collectionVariables.set(\"product_id\", jsonData.data.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
-						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"name\": \"Organic Spinach\",\n    \"price\": 12.0,\n    \"category\": \"VEGETABLES\",\n    \"availableQuantity\": 50\n}",
 							"options": { "raw": { "language": "json" } }
 						},
-						"url": "http://localhost:5000/api/v1/produce"
+						"url": "{{base_url}}/produce"
 					}
 				},
 				{
 					"name": "Update Product",
 					"request": {
 						"method": "PUT",
-						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"price\": 15.0\n}",
 							"options": { "raw": { "language": "json" } }
 						},
-						"url": "http://localhost:5000/api/v1/produce/PRODUCT_ID"
+						"url": "{{base_url}}/produce/{{product_id}}"
 					}
 				},
 				{
 					"name": "Delete Product",
 					"request": {
 						"method": "DELETE",
-						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
-						"url": "http://localhost:5000/api/v1/produce/PRODUCT_ID"
+						"header": [],
+						"url": "{{base_url}}/produce/{{product_id}}"
 					}
 				}
 			]
@@ -120,20 +210,34 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:5000/api/v1/rental"
+						"url": "{{base_url}}/rental"
 					}
 				},
 				{
 					"name": "Create Plot (Vendor)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"if (jsonData.success && jsonData.data && jsonData.data.id) {",
+									"    pm.collectionVariables.set(\"plot_id\", jsonData.data.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
-						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"location\": \"Plot A, North Farm\",\n    \"size\": \"10x10\",\n    \"price\": 250\n}",
 							"options": { "raw": { "language": "json" } }
 						},
-						"url": "http://localhost:5000/api/v1/rental"
+						"url": "{{base_url}}/rental"
 					}
 				}
 			]
@@ -143,23 +247,37 @@
 			"item": [
 				{
 					"name": "Apply for Certification (Vendor)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"if (jsonData.success && jsonData.data && jsonData.data.id) {",
+									"    pm.collectionVariables.set(\"cert_id\", jsonData.data.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
-						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"certifyingAgency\": \"Global Organic Body\",\n    \"certificationDate\": \"2024-04-17T10:00:00Z\"\n}",
 							"options": { "raw": { "language": "json" } }
 						},
-						"url": "http://localhost:5000/api/v1/vendor/certification"
+						"url": "{{base_url}}/vendor/certification"
 					}
 				},
 				{
 					"name": "Approve Certification (Admin)",
 					"request": {
 						"method": "PATCH",
-						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
-						"url": "http://localhost:5000/api/v1/admin/certification/CERT_ID"
+						"header": [],
+						"url": "{{base_url}}/admin/certification/{{cert_id}}"
 					}
 				}
 			]
@@ -169,40 +287,54 @@
 			"item": [
 				{
 					"name": "Place Order/Booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"if (jsonData.success && jsonData.data && jsonData.data.id) {",
+									"    pm.collectionVariables.set(\"order_id\", jsonData.data.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
-						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
+						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"vendorId\": \"VENDOR_ID\",\n    \"produceId\": \"PRODUCE_ID_OR_NULL\",\n    \"rentalSpaceId\": \"RENTAL_ID_OR_NULL\"\n}",
+							"raw": "{\n    \"vendorId\": \"{{vendor_id}}\",\n    \"produceId\": \"{{product_id}}\",\n    \"rentalSpaceId\": \"{{plot_id}}\"\n}",
 							"options": { "raw": { "language": "json" } }
 						},
-						"url": "http://localhost:5000/api/v1/orders"
+						"url": "{{base_url}}/orders"
 					}
 				},
 				{
 					"name": "My Orders (Customer)",
 					"request": {
 						"method": "GET",
-						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
-						"url": "http://localhost:5000/api/v1/orders/my-orders"
+						"header": [],
+						"url": "{{base_url}}/orders/my-orders"
 					}
 				},
 				{
 					"name": "Vendor Orders (Vendor)",
 					"request": {
 						"method": "GET",
-						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
-						"url": "http://localhost:5000/api/v1/orders/vendor-orders"
+						"header": [],
+						"url": "{{base_url}}/orders/vendor-orders"
 					}
 				},
 				{
 					"name": "Update Order Status",
 					"request": {
 						"method": "PATCH",
-						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
+						"header": [],
 						"body": { "mode": "raw", "raw": "{\"status\": \"DELIVERED\"}", "options": { "raw": { "language": "json" } } },
-						"url": "http://localhost:5000/api/v1/orders/ORDER_ID/status"
+						"url": "{{base_url}}/orders/{{order_id}}/status"
 					}
 				}
 			]
@@ -215,45 +347,123 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:5000/api/v1/community"
+						"url": "{{base_url}}/community"
 					}
 				},
 				{
 					"name": "Create Post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"if (jsonData.success && jsonData.data && jsonData.data.id) {",
+									"    pm.collectionVariables.set(\"post_id\", jsonData.data.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
-						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
+						"header": [],
 						"body": { "mode": "raw", "raw": "{\"content\": \"New farming tip!\"}", "options": { "raw": { "language": "json" } } },
-						"url": "http://localhost:5000/api/v1/community"
+						"url": "{{base_url}}/community"
 					}
 				},
 				{
 					"name": "Add Comment",
 					"request": {
 						"method": "POST",
-						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
+						"header": [],
 						"body": { "mode": "raw", "raw": "{\"content\": \"Nice tip!\"}", "options": { "raw": { "language": "json" } } },
-						"url": "http://localhost:5000/api/v1/community/POST_ID/comment"
+						"url": "{{base_url}}/community/{{post_id}}/comment"
 					}
 				},
 				{
 					"name": "Plant Tracking Dashboard",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"if (jsonData.success && jsonData.data && jsonData.data.length > 0) {",
+									"    // Strategy: find the first plant in the first order from the dashboard",
+									"    if (jsonData.data[0].plants && jsonData.data[0].plants.length > 0) {",
+									"        pm.collectionVariables.set(\"plant_id\", jsonData.data[0].plants[0].id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
-						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
-						"url": "http://localhost:5000/api/v1/tracking/dashboard"
+						"header": [],
+						"url": "{{base_url}}/tracking/dashboard"
 					}
 				},
 				{
 					"name": "Update Plant Health",
 					"request": {
 						"method": "PATCH",
-						"header": [ { "key": "Authorization", "value": "Bearer PASTE_TOKEN_HERE" } ],
+						"header": [],
 						"body": { "mode": "raw", "raw": "{\"healthStatus\": \"HEALTHY\", \"growthStage\": \"HARVEST\"}", "options": { "raw": { "language": "json" } } },
-						"url": "http://localhost:5000/api/v1/tracking/plants/PLANT_ID"
+						"url": "{{base_url}}/tracking/plants/{{plant_id}}"
 					}
 				}
 			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5000/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "product_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "vendor_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "plot_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "order_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "cert_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "post_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "plant_id",
+			"value": "",
+			"type": "string"
 		}
 	]
 }
